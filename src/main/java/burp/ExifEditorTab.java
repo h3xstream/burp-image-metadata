@@ -1,48 +1,75 @@
 package burp;
 
-import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
-import com.drew.metadata.Directory;
-import com.drew.metadata.Metadata;
-import com.drew.metadata.Tag;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.Map;
+import java.util.Set;
 
 public class ExifEditorTab implements IMessageEditorTab {
 
     private byte[] message;
-    private ITextEditor editor;
+    private JPanel panel;
+    private JTable table;
+    private static String[] columns = {"Property","Value"};
+    private DefaultTableModel tableModel;
+
     private IExtensionHelpers helpers;
+    private IBurpExtenderCallbacks callbacks;
 
-    ExifEditorTab(IBurpExtenderCallbacks callbacks,IExtensionHelpers helpers) {
+    ExifEditorTab(IBurpExtenderCallbacks callbacks, IExtensionHelpers helpers) {
         this.helpers = helpers;
-        this.editor = callbacks.createTextEditor();
-        editor.setEditable(false);
+        this.callbacks = callbacks;
 
-        this.setMessage("Loading...".getBytes(), false);
+        panel = buildPropertyTable();
+    }
+
+    private JPanel buildPropertyTable() {
+
+        //Table grid
+        String[][] dataValues = {};
+        tableModel = new DefaultTableModel(new String[][] {}, columns) {
+            private static final long serialVersionUID = 1L;
+
+            public boolean isCellEditable(int col, int row) {
+                return false;
+            }
+        };
+        this.table = new JTable( tableModel );
+
+        //Container (Panel)
+        this.panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        panel.add(new JScrollPane(table), BorderLayout.CENTER);
+        callbacks.customizeUiComponent(panel);
+
+        table.getColumnModel().getColumn(0).setPreferredWidth(150);
+        table.getColumnModel().getColumn(0).setMaxWidth(300);
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+        return panel;
     }
 
     @Override
     public String getTabCaption() {
-        return "Exif";
+        return "Metadata";
     }
 
     @Override
     public Component getUiComponent() {
-        return editor.getComponent();
+        return panel;
     }
 
     @Override
-    public boolean isEnabled(byte[] bytes, boolean isRequest) {
-        if(isRequest) {
+    public boolean isEnabled(byte[] respBytes, boolean isRequest) {
+        if (isRequest) {
             return false;
-        }
-        else {
-            return true;
+        } else { //The tab will appears if the response is a JPG or PNG image
+            IResponseInfo responseInfo = helpers.analyzeResponse(respBytes);
+            int bodyOffset = responseInfo.getBodyOffset();
+            return MetadataExtractor.isJpgFile(respBytes,bodyOffset) || MetadataExtractor.isPngFile(respBytes,bodyOffset);
         }
     }
 
@@ -50,25 +77,22 @@ public class ExifEditorTab implements IMessageEditorTab {
     public void setMessage(byte[] respBytes, boolean b) {
         this.message = respBytes;
 
-        IResponseInfo responseInfo = helpers.analyzeResponse(respBytes);
-        int bodyOffset = responseInfo.getBodyOffset();
-
-        BufferedInputStream in = new BufferedInputStream(new ByteArrayInputStream(respBytes,bodyOffset, respBytes.length - bodyOffset));
         try {
-            Metadata metadata = ImageMetadataReader.readMetadata(in,false);
+            Map<String,String> tags = new MetadataExtractor().readMetadata(respBytes,helpers);
 
-            StringBuilder buffer = new StringBuilder();
-            for(Directory dir : metadata.getDirectories()) {
-                for (Tag tag : dir.getTags()) {
-                    buffer.append(tag.getTagName() +": "+tag.getDescription()+"\n");
-                }
+            //Update the table
+            Set<Map.Entry<String,String>> entrySet = tags.entrySet();
+            tableModel.setRowCount(0);
+            int i=0;
+            for(Map.Entry<String,String> tag : entrySet) {
+                tableModel.addRow(new String[]{tag.getKey(), tag.getValue()});
             }
 
-            editor.setText(buffer.toString().getBytes());
+
         } catch (ImageProcessingException e) {
-            editor.setText(e.getMessage().getBytes());
+            tableModel.addRow(new String[]{"Error",e.getMessage()});
         } catch (IOException e) {
-            editor.setText(e.getMessage().getBytes());
+            tableModel.addRow(new String[]{"Error",e.getMessage()});
         }
     }
 
