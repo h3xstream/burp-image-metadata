@@ -32,7 +32,7 @@
                             <descriptorRefs>
                                 <descriptorRef>jar-with-dependencies</descriptorRef>
                             </descriptorRefs>
-                            <finalName>burp-img-metadata</finalName>
+                            <finalName>img-metadata-burp-plugin-1</finalName>
                             <appendAssemblyId>false</appendAssemblyId>
                             <archive>
                                 <addMavenDescriptor>false</addMavenDescriptor>

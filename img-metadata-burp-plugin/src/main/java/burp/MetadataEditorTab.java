@@ -87,6 +87,6 @@ public class MetadataEditorTab implements IMessageEditorTab {
 
     @Override
     public byte[] getSelectedData() {
-        return new byte[] {};
+        return this.message;
     }
 }

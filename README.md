@@ -4,7 +4,7 @@ Plugin for Burp and ZAP proxy that extract metadata from image. It support two t
 
 ## Resources
 
-Build status : [![Build Status](https://travis-ci.org/h3xstream/burp_image_metadata.png)](https://travis-ci.org/h3xstream/burp_image_metadata)
+Build status : [![Build Status](https://travis-ci.org/h3xstream/burp-image-metadata.png)](https://travis-ci.org/h3xstream/burp-image-metadata)
 
 ## License
 
