@@ -1,5 +1,8 @@
 package org.zaproxy.zap.extension.imgmetadata;
 
+import com.drew.imaging.ImageProcessingException;
+import com.h3xstream.imgmetadata.MetadataExtractor;
+import com.h3xstream.imgmetadata.PropertyPanel;
 import org.apache.commons.configuration.FileConfiguration;
 import org.parosproxy.paros.network.HttpMessage;
 import org.zaproxy.zap.extension.httppanel.Message;
@@ -10,19 +13,22 @@ import org.zaproxy.zap.extension.httppanel.view.HttpPanelViewModelListener;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+import java.util.Map;
+import java.util.Set;
 
 public class ResponseImageMetadataView implements HttpPanelView, HttpPanelViewModelListener {
 
     public static final String NAME = ResponseImageMetadataView.class.getName();
     private HttpPanelViewModel model;
 
-    private JPanel mainPanel;
+    private PropertyPanel propertyPanel;
 
     public ResponseImageMetadataView(HttpPanelViewModel model) {
         this.model = model;
 
-        mainPanel = new JPanel(new BorderLayout());
-        mainPanel.add(new JScrollPane(new JLabel("Hello!")));
+
+        propertyPanel = new PropertyPanel();
 
         this.model.addHttpPanelViewModelListener(this);
     }
@@ -34,7 +40,7 @@ public class ResponseImageMetadataView implements HttpPanelView, HttpPanelViewMo
 
     @Override
     public String getCaptionName() {
-        return NAME;
+        return "Metadata";
     }
 
     @Override
@@ -49,7 +55,7 @@ public class ResponseImageMetadataView implements HttpPanelView, HttpPanelViewMo
 
     @Override
     public JComponent getPane() {
-        return mainPanel;
+        return propertyPanel.getComponent();
     }
 
     @Override
@@ -112,7 +118,32 @@ public class ResponseImageMetadataView implements HttpPanelView, HttpPanelViewMo
     }
 
     @Override
-    public void dataChanged(HttpPanelViewModelEvent httpPanelViewModelEvent) {
+    public void dataChanged(HttpPanelViewModelEvent event) {
+        HttpMessage httpMessage = (HttpMessage) model.getMessage();
 
+        if (isImage(httpMessage)) {
+            byte[] respBytes = httpMessage.getResponseBody().getBytes();
+
+            try {
+                //Extract properties
+                Map<String,String> tags = new MetadataExtractor().readMetadata(respBytes, 0);
+
+                //Update the table
+                Set<Map.Entry<String,String>> entrySet = tags.entrySet();
+
+                propertyPanel.clearProperties();
+                int i=0;
+                for(Map.Entry<String,String> tag : entrySet) {
+                    propertyPanel.addProperty(tag.getKey(), tag.getValue());
+                }
+
+            } catch (ImageProcessingException e) {
+                propertyPanel.displayErrorMessage(e.getMessage());
+            } catch (IOException e) {
+                propertyPanel.displayErrorMessage(e.getMessage());
+            }
+        } else {
+            propertyPanel.clearProperties();
+        }
     }
 }

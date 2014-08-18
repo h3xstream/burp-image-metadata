@@ -45,22 +45,17 @@
     </build>
 
     <dependencies>
+
+        <dependency>
+            <groupId>com.h3xstream.img-metadata</groupId>
+            <artifactId>img-metadata-core</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.h3xstream.img-metadata</groupId>
             <artifactId>burp-api</artifactId>
         </dependency>
 
-
-        <dependency>
-            <groupId>com.drewnoakes</groupId>
-            <artifactId>metadata-extractor</artifactId>
-        </dependency>
-
-
-        <dependency>
-            <groupId>ar.com.hjg</groupId>
-            <artifactId>pngj</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>org.testng</groupId>

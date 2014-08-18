@@ -13,6 +13,7 @@
     <name>Image Metadata (root pom.xml)</name>
 
     <modules>
+        <module>img-metadata-core</module>
         <module>img-metadata-burp-plugin</module>
         <module>img-metadata-zap-plugin</module>
         <module>burp-api</module>
@@ -45,6 +46,11 @@
         <dependencies>
 
             <!-- Sub modules versions -->
+            <dependency>
+                <groupId>com.h3xstream.img-metadata</groupId>
+                <artifactId>img-metadata-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>com.h3xstream.img-metadata</groupId>

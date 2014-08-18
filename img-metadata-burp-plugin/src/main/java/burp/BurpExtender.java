@@ -18,6 +18,6 @@ public class BurpExtender implements IBurpExtender,IMessageEditorTabFactory {
 
     @Override
     public IMessageEditorTab createNewInstance(IMessageEditorController iMessageEditorController, boolean b) {
-        return new ExifEditorTab(this.callbacks,this.helpers);
+        return new MetadataEditorTab(this.callbacks,this.helpers);
     }
 }

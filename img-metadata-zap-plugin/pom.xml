@@ -51,6 +51,11 @@
     <dependencies>
 
         <dependency>
+            <groupId>com.h3xstream.img-metadata</groupId>
+            <artifactId>img-metadata-core</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>commons-httpclient</groupId>
             <artifactId>commons-httpclient</artifactId>
             <scope>provided</scope>

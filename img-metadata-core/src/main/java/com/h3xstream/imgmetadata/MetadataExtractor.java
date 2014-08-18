@@ -1,4 +1,4 @@
-package burp;
+package com.h3xstream.imgmetadata;
 
 import ar.com.hjg.pngj.PngReader;
 import ar.com.hjg.pngj.chunks.ChunkHelper;
@@ -18,9 +18,8 @@ import java.util.Map;
 
 public class MetadataExtractor {
 
-    public Map<String, String> readMetadata(byte[] respBytes, IExtensionHelpers helpers) throws ImageProcessingException, IOException {
-        IResponseInfo responseInfo = helpers.analyzeResponse(respBytes);
-        int bodyOffset = responseInfo.getBodyOffset();
+    public Map<String, String> readMetadata(byte[] respBytes, int bodyOffset) throws ImageProcessingException, IOException {
+
 
         BufferedInputStream in = new BufferedInputStream(new ByteArrayInputStream(respBytes, bodyOffset, respBytes.length - bodyOffset));
         Map<String, String> tags = new HashMap<String,String>();
@@ -41,7 +40,7 @@ public class MetadataExtractor {
                 }
             }
         }
-        else if(isPngFile(respBytes,bodyOffset)) {  // Magic bytes : 0x89 P N G \r \n 0x1a \n
+        else if(isPngFile(respBytes,bodyOffset)) {
             PngReader pngr = new PngReader(in);
 
             pngr.readSkippingAllRows();
@@ -65,6 +64,6 @@ public class MetadataExtractor {
     public static boolean isPngFile(byte[] respBytes,int bodyOffset) {
         return respBytes[bodyOffset] == (byte) 0x89 && respBytes[bodyOffset+1] == (byte) 0x50 && respBytes[bodyOffset+2] == (byte) 0x4E && //
                 respBytes[bodyOffset+3] == (byte) 0x47 && respBytes[bodyOffset+4] == (byte) 0x0D && respBytes[bodyOffset+5] == (byte) 0x0A && //
-                respBytes[bodyOffset+6] == (byte) 0x1A && respBytes[bodyOffset+7] == (byte) 0x0A;
+                respBytes[bodyOffset+6] == (byte) 0x1A && respBytes[bodyOffset+7] == (byte) 0x0A;  // Magic bytes : 0x89 P N G \r \n 0x1a \n
     }
 }
