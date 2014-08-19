@@ -11,8 +11,9 @@
     
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.h3xstream.img-metadata</groupId>
     <artifactId>img-metadata-burp-plugin</artifactId>
+
+    <name>Image Metadata (Burp Suite Plugin)</name>
 
     <build>
         <plugins>

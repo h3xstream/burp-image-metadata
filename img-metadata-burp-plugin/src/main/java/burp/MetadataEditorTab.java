@@ -51,6 +51,7 @@ public class MetadataEditorTab implements IMessageEditorTab {
     @Override
     public void setMessage(byte[] respBytes, boolean b) {
         this.message = respBytes;
+        propertyPanel.clearProperties();
 
         try {
             IResponseInfo responseInfo = helpers.analyzeResponse(respBytes);
@@ -62,7 +63,6 @@ public class MetadataEditorTab implements IMessageEditorTab {
             //Update the table
             Set<Map.Entry<String,String>> entrySet = tags.entrySet();
 
-            propertyPanel.clearProperties();
             int i=0;
             for(Map.Entry<String,String> tag : entrySet) {
                 propertyPanel.addProperty(tag.getKey(), tag.getValue());

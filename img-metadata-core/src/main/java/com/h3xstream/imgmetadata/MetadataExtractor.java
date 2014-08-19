@@ -31,7 +31,6 @@ public class MetadataExtractor {
         //Magic codes taken from http://en.wikipedia.org/wiki/Magic_number_(programming)#Examples
         if(isJpgFile(respBytes,bodyOffset)) { //JPEG/Exif
 
-
             Metadata metadata = ImageMetadataReader.readMetadata(in, false);
 
             for (Directory dir : metadata.getDirectories()) {

@@ -120,6 +120,7 @@ public class ResponseImageMetadataView implements HttpPanelView, HttpPanelViewMo
     @Override
     public void dataChanged(HttpPanelViewModelEvent event) {
         HttpMessage httpMessage = (HttpMessage) model.getMessage();
+        propertyPanel.clearProperties();
 
         if (isImage(httpMessage)) {
             byte[] respBytes = httpMessage.getResponseBody().getBytes();
@@ -131,7 +132,6 @@ public class ResponseImageMetadataView implements HttpPanelView, HttpPanelViewMo
                 //Update the table
                 Set<Map.Entry<String,String>> entrySet = tags.entrySet();
 
-                propertyPanel.clearProperties();
                 int i=0;
                 for(Map.Entry<String,String> tag : entrySet) {
                     propertyPanel.addProperty(tag.getKey(), tag.getValue());
