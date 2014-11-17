@@ -1,6 +1,6 @@
 ## Copyright
 
-The imaged used for testing should be copyright free.
+The images used for testing should be copyright free.
 
 Source:
 
