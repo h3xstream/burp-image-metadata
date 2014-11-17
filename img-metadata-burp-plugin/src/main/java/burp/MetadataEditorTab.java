@@ -1,8 +1,10 @@
 package burp;
 
 import com.drew.imaging.ImageProcessingException;
+import com.esotericsoftware.minlog.Log;
 import com.h3xstream.imgmetadata.MetadataExtractor;
 import com.h3xstream.imgmetadata.PropertyPanel;
+import com.h3xstream.imgmetadata.PropertyPanelController;
 
 import java.awt.*;
 import java.io.IOException;
@@ -21,7 +23,7 @@ public class MetadataEditorTab implements IMessageEditorTab {
         this.helpers = helpers;
         this.callbacks = callbacks;
 
-        propertyPanel = new PropertyPanel();
+        propertyPanel = new PropertyPanel(new PropertyPanelController());
 
         callbacks.customizeUiComponent(propertyPanel.getComponent());
     }
@@ -44,7 +46,10 @@ public class MetadataEditorTab implements IMessageEditorTab {
         } else { //The tab will appears if the response is a JPG or PNG image
             IResponseInfo responseInfo = helpers.analyzeResponse(respBytes);
             int bodyOffset = responseInfo.getBodyOffset();
-            return MetadataExtractor.isJpgFile(respBytes, bodyOffset) || MetadataExtractor.isPngFile(respBytes,bodyOffset);
+            return MetadataExtractor.isJpgFile(respBytes, bodyOffset) || //
+                    MetadataExtractor.isPngFile(respBytes,bodyOffset) || //
+                    MetadataExtractor.isGifFile(respBytes,bodyOffset) || //
+                    MetadataExtractor.isBmpFile(respBytes,bodyOffset);
         }
     }
 
@@ -69,8 +74,10 @@ public class MetadataEditorTab implements IMessageEditorTab {
             }
 
         } catch (ImageProcessingException e) {
+            Log.error(e.getMessage());
             propertyPanel.displayErrorMessage(e.getMessage());
         } catch (IOException e) {
+            Log.error(e.getMessage());
             propertyPanel.displayErrorMessage(e.getMessage());
         }
     }

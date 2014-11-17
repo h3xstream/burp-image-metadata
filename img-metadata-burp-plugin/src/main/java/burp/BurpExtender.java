@@ -1,5 +1,9 @@
 package burp;
 
+import com.esotericsoftware.minlog.Log;
+
+import java.io.IOException;
+
 public class BurpExtender implements IBurpExtender,IMessageEditorTabFactory {
 
     public IBurpExtenderCallbacks callbacks;
@@ -7,13 +11,27 @@ public class BurpExtender implements IBurpExtender,IMessageEditorTabFactory {
 
 
     @Override
-    public void registerExtenderCallbacks(IBurpExtenderCallbacks callbacks) {
+    public void registerExtenderCallbacks(final IBurpExtenderCallbacks callbacks) {
 
         this.callbacks = callbacks;
         this.helpers = callbacks.getHelpers();
         this.callbacks.setExtensionName("Image Metadata");
 
+        Log.setLogger(new Log.Logger() {
+            @Override
+            protected void print(String message) {
+                try {
+                    callbacks.getStdout().write(message.getBytes());
+                    callbacks.getStdout().write('\n');
+                } catch (IOException e) {
+                    System.err.println("Error while printing the log : " + e.getMessage()); //Very unlikely
+                }
+            }
+        });
+        Log.DEBUG();
+
         this.callbacks.registerMessageEditorTabFactory(this);
+
     }
 
     @Override

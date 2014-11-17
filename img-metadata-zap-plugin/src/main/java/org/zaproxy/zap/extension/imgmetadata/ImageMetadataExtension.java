@@ -1,5 +1,7 @@
 package org.zaproxy.zap.extension.imgmetadata;
 
+import com.esotericsoftware.minlog.Log;
+import org.apache.log4j.Logger;
 import org.parosproxy.paros.Constant;
 import org.parosproxy.paros.extension.ExtensionAdaptor;
 import org.parosproxy.paros.extension.ExtensionHook;
@@ -13,6 +15,8 @@ public class ImageMetadataExtension extends ExtensionAdaptor {
     public static final String NAME = ImageMetadataExtension.class.getName();
     private ResourceBundle messages = null;
 
+    private static final Logger LOGGER = Logger.getLogger(ImageMetadataExtension.class.getName());
+
     public ImageMetadataExtension() {
         super(NAME);
         initExtension();
@@ -20,6 +24,14 @@ public class ImageMetadataExtension extends ExtensionAdaptor {
 
     private void initExtension() {
         messages = ResourceBundle.getBundle(this.getClass().getPackage().getName() + ".Messages", Constant.getLocale());
+
+        Log.setLogger(new Log.Logger() {
+            @Override
+            protected void print(String message) {
+                LOGGER.info(message);
+            }
+        });
+        Log.DEBUG();
     }
 
     @Override

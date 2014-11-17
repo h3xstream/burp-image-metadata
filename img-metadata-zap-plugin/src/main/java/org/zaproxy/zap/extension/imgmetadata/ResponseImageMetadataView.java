@@ -3,6 +3,7 @@ package org.zaproxy.zap.extension.imgmetadata;
 import com.drew.imaging.ImageProcessingException;
 import com.h3xstream.imgmetadata.MetadataExtractor;
 import com.h3xstream.imgmetadata.PropertyPanel;
+import com.h3xstream.imgmetadata.PropertyPanelController;
 import org.apache.commons.configuration.FileConfiguration;
 import org.parosproxy.paros.network.HttpMessage;
 import org.zaproxy.zap.extension.httppanel.Message;
@@ -27,8 +28,7 @@ public class ResponseImageMetadataView implements HttpPanelView, HttpPanelViewMo
     public ResponseImageMetadataView(HttpPanelViewModel model) {
         this.model = model;
 
-
-        propertyPanel = new PropertyPanel();
+        propertyPanel = new PropertyPanel(new PropertyPanelController());
 
         this.model.addHttpPanelViewModelListener(this);
     }
