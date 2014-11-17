@@ -12,9 +12,11 @@ This software is release under [LGPL](http://www.gnu.org/licenses/lgpl.html).
 
 ## Downloads
 
-Burp Suite plugin : [Download](https://raw.githubusercontent.com/h3xstream/burp-image-metadata/gh-pages/releases/burp/img-metadata-burp-plugin-1.jar)
+(Updated on November 16th 2014)
 
-ZAP plugin : [Download](https://raw.githubusercontent.com/h3xstream/burp-image-metadata/gh-pages/releases/zap/imgmetadata-alpha-1.jar)
+Burp Suite plugin : [Download](https://raw.githubusercontent.com/h3xstream/burp-image-metadata/gh-pages/releases/burp/img-metadata-burp-plugin-2.jar)
+
+ZAP plugin : [Download](https://raw.githubusercontent.com/h3xstream/burp-image-metadata/gh-pages/releases/zap/imgmetadata-alpha-2.jar)
 
 ## Screenshots
 

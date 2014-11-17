@@ -34,7 +34,7 @@
                             <descriptorRefs>
                                 <descriptorRef>jar-with-dependencies</descriptorRef>
                             </descriptorRefs>
-                            <finalName>imgmetadata-alpha-1</finalName>
+                            <finalName>imgmetadata-alpha-2</finalName>
                             <appendAssemblyId>false</appendAssemblyId>
                             <archive>
                                 <addMavenDescriptor>false</addMavenDescriptor>
