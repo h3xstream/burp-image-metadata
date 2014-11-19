@@ -12,12 +12,33 @@
 
     <name>Image Metadata (root pom.xml)</name>
 
-    <modules>
-        <module>img-metadata-core</module>
-        <module>img-metadata-burp-plugin</module>
-        <module>img-metadata-zap-plugin</module>
-        <module>burp-api</module>
-    </modules>
+
+    <profiles>
+        <profile>
+            <id>all-modules</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>img-metadata-core</module>
+                <module>img-metadata-burp-plugin</module>
+                <module>img-metadata-zap-plugin</module>
+                <module>burp-api</module>
+            </modules>
+        </profile>
+
+        <profile> <!-- The Burp Team is allergic to ZAP. They don't want to compile a ZAP plugin ever. ;) -->
+            <id>burp-only</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
+                <module>img-metadata-core</module>
+                <module>img-metadata-burp-plugin</module>
+                <module>burp-api</module>
+            </modules>
+        </profile>
+    </profiles>
 
     <properties>
         <!-- Encoding configuration -->
