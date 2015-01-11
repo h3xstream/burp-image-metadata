@@ -41,7 +41,7 @@ public class MetadataExtractor {
         else {
 
             //Everything else.. JPG, GIF, BMP, PNG
-            Metadata metadata = ImageMetadataReader.readMetadata(in, false);
+            Metadata metadata = ImageMetadataReader.readMetadata(in);
 
             for (Directory dir : metadata.getDirectories()) {
                 for (Tag tag : dir.getTags()) {

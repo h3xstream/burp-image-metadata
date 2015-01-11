@@ -93,7 +93,6 @@ public class PropertyPanel {
     }
 
     public JPanel getComponent() {
-        Log.debug("Active panel : "+activePanel.getName());
         return activePanel;
     }
 
