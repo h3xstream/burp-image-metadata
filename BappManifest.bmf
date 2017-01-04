@@ -1,0 +1,11 @@
+Uuid: 3996aa01e0474b1a990db586a7f14ab7
+ExtensionType: 1
+Name: Image Metadata
+ScreenVersion: 2.1.0
+SerialVersion: 2
+MinPlatformVersion: 0
+ProOnly: False
+Author: Philippe Arteau
+ShortDescription: Extracts metadata from image files.
+EntryPoint: img-metadata-burp-plugin/target/img-metadata-burp-plugin-2.jar
+BuildCommand: rm -f libs/zap.jar && mvn package -DskipTests=true -Dmaven.javadoc.skip=true -B -Pburp-only
