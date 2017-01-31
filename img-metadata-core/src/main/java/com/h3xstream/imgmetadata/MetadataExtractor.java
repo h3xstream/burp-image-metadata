@@ -85,6 +85,8 @@ public class MetadataExtractor {
     // - http://www.astro.keele.ac.uk/oldusers/rno/Computing/File_magic.html
 
     public static boolean isJpgFile(byte[] respBytes,int bodyOffset) {
+        if (respBytes.length < bodyOffset + 3) return false;
+
         return ((respBytes[bodyOffset] == (byte) 0xFF && //
                 respBytes[bodyOffset+1] == (byte) 0xD8) //JPEG
                 || (respBytes[bodyOffset] == (byte) 0x4A && //
@@ -98,6 +100,8 @@ public class MetadataExtractor {
     }
 
     public static boolean isPngFile(byte[] respBytes,int bodyOffset) {
+        if (respBytes.length < bodyOffset + 7) return false;
+
         return respBytes[bodyOffset] == (byte) 0x89 && //
                 respBytes[bodyOffset+1] == (byte) 0x50 && //
                 respBytes[bodyOffset+2] == (byte) 0x4E && //
@@ -109,6 +113,8 @@ public class MetadataExtractor {
     }
 
     public static boolean isGifFile(byte[] respBytes,int bodyOffset) {
+        if (respBytes.length < bodyOffset + 3) return false;
+
         return respBytes[bodyOffset] == (byte) 0x47 && //
                 respBytes[bodyOffset+1] == (byte) 0x49 && //
                 respBytes[bodyOffset+2] == (byte) 0x46 && //
@@ -116,6 +122,8 @@ public class MetadataExtractor {
     }
 
     public static boolean isBmpFile(byte[] respBytes,int bodyOffset) {
+        if (respBytes.length < bodyOffset + 1) return false;
+
         return respBytes[bodyOffset] == (byte) 0x42 && //
                 respBytes[bodyOffset+1] == (byte) 0x4d;
     }
